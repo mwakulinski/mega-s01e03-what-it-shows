@@ -1,0 +1,58 @@
+---
+layout: runbook
+title: '#4471 · what it holds: three problems, not one'
+owner: mwakulinski
+status: proposed
+reviewed: 2026-10-31
+signature: mwakulinski
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+The [#4471 page](/kb/incidents/4471) says the 412 reports are one issue with one fix queued.
+Its own cause table, built from the same export, already disagrees. Read every report by
+its tenant and its body, and #4471 holds three problems. Each now has its own ticket.
+
+<Callout kind="warn">
+The queued parser fix will not close #4471. Two of its problems have a different cause and a different fix.
+</Callout>
+
+## What #4471 holds
+
+<ProblemTable ticket={4471} repo="https://github.com/mwakulinski/mega-s01e03-what-it-shows" />
+
+## The three problems
+
+1. **The shared parser reads dates month first.** Every tenant on file writes the day first, so
+   their dates come out swapped: "Our 7 April reminder went out on 4 July." This is the bug the
+   #4471 page describes, and the queued fix.
+2. **The booking-v3 form hint asks for `MM/DD/YYYY`.** People type what the hint shows, month
+   first, and the form reads it the tenant's way. Only form reports from the three v3 tenants.
+   The fix is the hint, not the parser.
+3. **Invites move by one day.** No swap: "Invite says Tuesday 12 May. Calendar says Monday
+   11 May." · "Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meeting." The desk
+   already marked these as a one-day move in `desk-notes.json`, then filed them under the parser
+   by tenant. A day/month fix cannot move a date by one day.
+
+## Why they were merged
+
+Triage merges on subject ([decision 0001](/kb/decisions/0001-dedupe-by-subject)). The 412
+reports use twelve subjects, and the problems share them: "Date is wrong" and "Wrong day on the
+invite" each carry reports of all three. Subject matching cannot tell them apart. Intake's tag does not help either: it guesses from the
+reporter's browser, and it disagrees with the tenant's cause on many reports (column "intake tag wrong").
+
+## The desk's own view, for comparison
+
+<CauseTable ticket={4471} />
+
+## Lessons
+
+- A count is not a cause. Read the reports by tenant and body before marking a big ticket known.
+- Matching on subject merges different bugs that people describe in the same words.
+
+<RenderStamp {signature} />

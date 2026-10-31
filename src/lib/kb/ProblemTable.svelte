@@ -22,7 +22,10 @@
   <tbody>
     {#each split.groups as g (g.problem)}
       <tr>
-        <td>{PROBLEMS[g.problem].title}</td>
+        <td>
+          {PROBLEMS[g.problem].title}
+          {#if g.filedUnder.length}<br /><span class="note">also counted above, filed under {g.filedUnder.join(', ')}</span>{/if}
+        </td>
         <td>{g.reports}</td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
@@ -39,4 +42,5 @@
 
 <style>
   .sum { font-size: 1.1rem; }
+  .note { color: var(--muted); font-size: 0.85em; }
 </style>

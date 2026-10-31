@@ -24,6 +24,9 @@ The queued parser fix will not close #4471. Two of its problems have a different
 
 ## What #4471 holds
 
+Counted the way the desk counts, as exported: every report is filed under its tenant's cause.
+The one-day moves stay filed under the parser and are counted again in their own row.
+
 <ProblemTable ticket={4471} repo="https://github.com/mwakulinski/mega-s01e03-what-it-shows" />
 
 ## The three problems
@@ -36,8 +39,8 @@ The queued parser fix will not close #4471. Two of its problems have a different
    The fix is the hint, not the parser.
 3. **Invites move by one day.** No swap: "Invite says Tuesday 12 May. Calendar says Monday
    11 May." · "Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meeting." The desk
-   already marked these as a one-day move in `desk-notes.json`, then filed them under the parser
-   by tenant. A day/month fix cannot move a date by one day.
+   already marked these as a one-day move in `desk-notes.json` and filed them under the parser
+   by tenant, where they are still counted. A day/month fix cannot move a date by one day.
 
 ## Why they were merged
 
